@@ -1,4 +1,25 @@
+# Python cache files
 __pycache__/
 *.pyc
-users.db
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
 .env
+
+# Database files
+users.db
+
+# IDE/editor files
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Flask instance folder
+instance/
+
+# MacOS system files
+.DS_Store
