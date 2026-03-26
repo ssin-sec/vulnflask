@@ -37,10 +37,10 @@ Exploit:
 
 3. Cross-Site Scripting (XSS)
 
-<p>You searched for: {{ query|safe }}</p>
+`<p>You searched for: {{ query|safe }}</p>`
 
 Exploit:
-<script>alert('XSS')</script>
+`<script>alert('XSS')</script>`
 ->executes arbitrary JavaScript in the browser
 
 4. Weak Authentication
@@ -53,15 +53,12 @@ Fix SQL Injection:
 c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
 
 Fix XSS:
-<p>You searched for: {{ query }}</p>
+`<p>You searched for: {{ query }}</p>`
 
 Fix Authentication:
 	•	Use password hashing (e.g. bcrypt)
 	•	Implement secure session handling
 
-Fix Authentication:
-	•	Use password hashing (e.g. bcrypt)
-	•	Implement secure session handling
 
 🎯 Purpose
 
@@ -70,11 +67,12 @@ This project demonstrates:
 	•	Exploitation techniques
 	•	Secure coding practices
 
-📌 Future Improvements
+📌 Future Improvements:
+	1.CSRF protection
+	2.Rate limiting
+	3.Logging and monitoring(SIEM integration)
 
-	•	CSRF protection
-	•	Rate limiting
-	•	Logging and monitoring (SIEM integration)
+	
 
 🧠 Author
 
