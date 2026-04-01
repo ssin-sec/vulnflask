@@ -1,80 +1,63 @@
-🔐 Vulnerable Flask Web App (OWASP Top 10)
+# VulnFlask: Educational Vulnerable Web Application
 
-This is a deliberately vulnerable web application built with Flask and SQLite to demonstrate common web security vulnerabilities and how they can be exploited and fixed.
+VulnFlask is a deliberately insecure Flask application designed for cybersecurity training, penetration testing practice, and learning about common web application vulnerabilities.
 
-⸻
+**WARNING: DO NOT DEPLOY THIS IN A PRODUCTION ENVIRONMENT.** This application contains several critical security flaws by design. Use only in controlled, isolated environments.
 
-🚀 Setup Instructions
-	1.	Clone the repository
-	2.	Install dependencies:
-pip install -r requirements.txt
-	3.	Run the app:
-python app.py
-	4.	Open in browser:
-http://127.0.0.1:5000
+## Features & Intentional Vulnerabilities
 
-⸻
+This application includes a range of common vulnerabilities (OWASP Top 10) for demonstration purposes:
 
-⚠️ Vulnerabilities
+1.  **SQL Injection (SQLi):**
+    *   **Login Bypass:** Authenticate without a valid password (`/login`).
+    *   **Data Manipulation:** Inject SQL into profile updates and signup forms (`/settings`, `/signup`).
+    *   **Information Disclosure:** Extract database contents through the profile search (`/profile`).
 
-1. SQL Injection (Login)
+2.  **Command Injection:**
+    *   The Network Diagnostic Tool (`/debug`) allows arbitrary shell command execution via the `ip` parameter.
 
-The login system is vulnerable due to unsafe query construction:
-query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+3.  **Cross-Site Scripting (XSS):**
+    *   Reflected XSS in the user directory search (`/search`) via the `q` parameter, which is rendered with the `|safe` filter.
 
-Exploit:
-Username: admin' --
-Password: anything
--> logs in without password
+4.  **Server-Side Template Injection (SSTI):**
+    *   The dashboard (`/dashboard`) uses f-strings inside `render_template_string`, allowing for template injection via the user's session data.
 
-2. SQL Injection (Profile)
+5.  **Path Traversal (LFI):**
+    *   The internal file viewer (`/view`) allows reading arbitrary files on the server's filesystem.
 
-c.execute(f"SELECT id, username FROM users WHERE id = {user_id}")
+6.  **Insecure Direct Object Reference (IDOR):**
+    *   User profiles (`/profile`) are accessed via sequential IDs, allowing users to view any profile by modifying the `id` parameter.
 
-Exploit:
-/profile?id=1 OR 1=1
--> returns unintended data
+## Getting Started
 
-3. Cross-Site Scripting (XSS)
+### Prerequisites
 
-`<p>You searched for: {{ query|safe }}</p>`
+-   Python 3.x
+-   pip (Python package installer)
 
-Exploit:
-`<script>alert('XSS')</script>`
-->executes arbitrary JavaScript in the browser
+### Setup
 
-4. Weak Authentication
-	•	Plaintext passwords stored
-	•	No hashing or salting
+1.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-🛡️ Fixes
+2.  **Initialize the database (optional):**
+    The application will automatically create `users.db` and seed it with initial data if it doesn't exist.
 
-Fix SQL Injection:
-c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+3.  **Run the application:**
+    ```bash
+    python app.py
+    ```
+    The app will start on `http://127.0.0.1:5001`.
 
-Fix XSS:
-`<p>You searched for: {{ query }}</p>`
+## Default Credentials
+-   **Admin:** `admin` / `admin123`
+-   **User:** `bob` / `password`
 
-Fix Authentication:
-	•	Use password hashing (e.g. bcrypt)
-	•	Implement secure session handling
+## Disclaimer
+This project is for educational purposes only. Unauthorized use of these techniques against systems you do not have permission to test is illegal. Use responsibly.
 
-
-🎯 Purpose
-
-This project demonstrates:
-	•	Real-world web vulnerabilities (OWASP Top 10)
-	•	Exploitation techniques
-	•	Secure coding practices
-
-📌 Future Improvements:
-	1.CSRF protection
-	2.Rate limiting
-	3.Logging and monitoring(SIEM integration)
-
-	
-
-🧠 Author
 
 Github:https://github.com/ssin-sec
 Cybersecurity learning project.
